@@ -24,7 +24,6 @@ public class RestExceptionHandlerAdvice {
                 HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     @ExceptionHandler(BadRequestAlertException.class)
     public ResponseEntity<RestResponse> badRequestException(
             Exception ex,
@@ -32,6 +31,6 @@ public class RestExceptionHandlerAdvice {
     ) {
         return new ResponseEntity<>(
                 new RestResponse(ex.getMessage()),
-                HttpStatus.UNPROCESSABLE_ENTITY);
+                HttpStatus.BAD_REQUEST);
     }
 }

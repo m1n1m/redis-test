@@ -2,7 +2,7 @@ package ru.funbox.links.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
 import ru.funbox.links.service.VisitedLinksService;
@@ -11,20 +11,23 @@ import ru.funbox.links.service.dto.VisitedLinksDTO;
 
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
 public class VisitedLinksServiceImpl implements VisitedLinksService {
 
-    private final StringRedisTemplate stringRedisTemplate;
+    private final RedisTemplate<String, String> stringRedisTemplate;
     private final ZSetOperations<String, String> stringStringZSetOperations;
     private final Pattern domainPattern;
     private final String KEY = "VISITED_DOMAINS";
 
-    public VisitedLinksServiceImpl(StringRedisTemplate stringRedisTemplate) {
-        this.stringRedisTemplate = stringRedisTemplate;
+    public VisitedLinksServiceImpl(RedisTemplate<String, String> stringStringRedisTemplate) {
+        this.stringRedisTemplate = stringStringRedisTemplate;
         stringStringZSetOperations = stringRedisTemplate.opsForZSet();
         domainPattern = Pattern.compile("^(?:https?:\\/\\/)?(?:[^@\\/\\n]+@)?(?:www\\.)?([^:\\/?\\n]+)");
     }
