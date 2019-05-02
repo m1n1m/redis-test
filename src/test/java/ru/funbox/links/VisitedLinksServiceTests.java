@@ -5,7 +5,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.ContextHierarchy;
 import org.springframework.test.context.junit4.SpringRunner;
+import ru.funbox.links.config.RedisTestConfiguration;
 import ru.funbox.links.service.VisitedLinksService;
 import ru.funbox.links.service.dto.VisitedDomainsDTO;
 import ru.funbox.links.service.dto.VisitedLinksDTO;
@@ -16,8 +20,14 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@ActiveProfiles("test")
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@SpringBootTest(
+        webEnvironment = SpringBootTest.WebEnvironment.NONE
+)
+@ContextHierarchy({
+        @ContextConfiguration(classes = RedisTestConfiguration.class)
+})
 public class VisitedLinksServiceTests {
 
     @Autowired
